@@ -34,9 +34,9 @@ public class GridInterface extends JPanel {
     /* Construct a new grid interface */
     public GridInterface() {
         grid = new Grid();
-		addMouseListener(new MouseInputHandler(grid));
-		
-		// Update timer--draw the game board every 5ms
+        addMouseListener(new MouseInput(grid));
+
+        // Update timer--draw the game board every 5ms
         new Timer(5, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,15 +48,15 @@ public class GridInterface extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         final Graphics2D g2 = (Graphics2D) g;
-		
+
 		/* Anti-aliasing to smooth fonts out */
-		g2.setRenderingHint(
-			RenderingHints.KEY_ANTIALIASING,
-			RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(
-			RenderingHints.KEY_TEXT_ANTIALIASING,
-			RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
+        g2.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		/* Draw the game board */
         grid.draw(g2);
     }

@@ -28,38 +28,47 @@ import java.awt.event.WindowEvent;
  */
 public class Minesweeper {
 
-	/* The game frame */
-	protected JFrame frame;
+    /* The game frame */
+    protected JFrame frame;
 
-	/* The graphics panel */	
-	protected GridInterface gui;
+    /* The graphics panel */
+    protected GridInterface gui;
 
-	/* Construct the window to hold a new game of minesweeper */
-	public Minesweeper() {
-		frame = new JFrame("Minesweeper");
-		frame.setSize(460, 480);
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
+    /* Construct the window to hold a new game of minesweeper */
+    public Minesweeper() {
+        frame = new JFrame("Minesweeper");
+        frame.setSize(460, 480);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 if (confirmLeave())
                     System.exit(1);
             }
         });
-		frame.setContentPane(gui = new GridInterface());
-		frame.setVisible(true);
-	}
+        frame.setContentPane(gui = new GridInterface());
+        frame.setVisible(true);
+    }
 
-    /* Prompt for confirmation that you want to quit */
+    /**
+     * Prompt for confirmation that you want to quit
+     *
+     * @return - a boolean representing if you want to quit
+     */
     private boolean confirmLeave() {
         int option = JOptionPane.showConfirmDialog(Minesweeper.this.frame,
                 "Are you sure you want to leave? You will lose your game progress.",
-				"Minesweeper", JOptionPane.YES_NO_OPTION);
+                "Minesweeper", JOptionPane.YES_NO_OPTION);
         return option == JOptionPane.YES_OPTION;
     }
-	
-	/* Application entry point */
-	public static void main(String[] args) {
-		new Minesweeper();
-	}
+
+    /**
+     * Application entry point
+     *
+     * @param args
+     *         - command line args
+     */
+    public static void main(String[] args) {
+        new Minesweeper();
+    }
 }

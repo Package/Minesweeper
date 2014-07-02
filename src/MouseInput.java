@@ -25,37 +25,42 @@ import java.awt.event.MouseEvent;
  * THE
  * SOFTWARE.
  */
- public class MouseInputHandler extends MouseAdapter {
- 
-	/* The game board */
-	protected Grid grid;
-	
-	/* Left mouse button to open a cell */
-	private static final int OPEN_CELL_BUTTON = 1;
-	
-	/* Right mouse button to mark a mine */
-	private static final int MARK_MINE_BUTTON = 3;
-	
-	/* Construct a new input handler*/
-	public MouseInputHandler(Grid grid) {
-		this.grid = grid;
-	}
-	
-	/* Handle mouse press events */
-	public void mousePressed(MouseEvent e) {
-		final int s = 50; // cell size
-		final int x = e.getX() / s;
-		final int y = e.getY() / s;
+public class MouseInput extends MouseAdapter {
+
+    /* The game board */
+    protected Grid grid;
+
+    /* Left mouse button to open a cell */
+    private static final int OPEN_CELL_BUTTON = 1;
+
+    /* Right mouse button to mark a mine */
+    private static final int MARK_MINE_BUTTON = 3;
+
+    /* Construct a new input handler */
+    public MouseInput(Grid grid) {
+        this.grid = grid;
+    }
+
+    /**
+     * Handle mouse press events
+     *
+     * @param e
+     *         - the mouse press event
+     */
+    public void mousePressed(MouseEvent e) {
+        final int s = 50; // cell size
+        final int x = e.getX() / s;
+        final int y = e.getY() / s;
         final int button = e.getButton();
 
         // clicked outside the board
-		if (x < 0 || y < 0 || x > grid.xCells || y > grid.yCells)
-			return;
+        if (x < 0 || y < 0 || x > grid.xCells || y > grid.yCells)
+            return;
 
-		if (button == OPEN_CELL_BUTTON) 
+        if (button == OPEN_CELL_BUTTON)
             grid.openCell(x, y);
-			
-		if (button == MARK_MINE_BUTTON) 
+
+        if (button == MARK_MINE_BUTTON)
             grid.markMine(x, y);
-	}
- }
+    }
+}
