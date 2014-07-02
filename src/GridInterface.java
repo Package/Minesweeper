@@ -32,8 +32,8 @@ public class GridInterface extends JPanel {
     protected Grid grid;
 
     /* Construct a new grid interface */
-    public GridInterface() {
-        grid = new Grid();
+    public GridInterface(int width, int height, int mines) {
+        grid = new Grid(width, height, mines);
         addMouseListener(new MouseInput(grid));
 
         // Update timer--draw the game board every 5ms

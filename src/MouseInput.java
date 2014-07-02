@@ -48,7 +48,7 @@ public class MouseInput extends MouseAdapter {
      *         - the mouse press event
      */
     public void mousePressed(MouseEvent e) {
-        final int s = 50; // cell size
+        final int s = 30; // cell size
         final int x = e.getX() / s;
         final int y = e.getY() / s;
         final int button = e.getButton();

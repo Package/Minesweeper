@@ -49,7 +49,7 @@ public class Cell {
     protected Type type;
 
     /* The font to render cells with */
-    protected static final Font FONT = new Font("sans-serif", Font.PLAIN, 50);
+    protected static final Font FONT = new Font("serif", Font.PLAIN, 30);
 
     /* Default colour of a cell*/
     protected static final Color BACKGROUND = new Color(0xd0d0d0);
@@ -100,7 +100,7 @@ public class Cell {
 
     /* Draw the cell to the game board */
     public void draw(Graphics2D g) {
-        final int s = 50; // size of a cell
+        final int s = 30; // size of a cell
         g.setColor(BACKGROUND);
         g.fillRect(x * s, y * s, s, s);
         g.setFont(FONT);
@@ -110,18 +110,23 @@ public class Cell {
             g.fillRect(x * s, y * s, s, s);
             if (type == Type.MINE) {
                 g.setColor(Color.BLACK);
-                g.drawString("X", (x * s) + 10, ((y * s) + s) - 5);
+                g.fillOval((x * s) + 8, ((y * s) + 9), s / 2, s / 2);
+                g.setColor(Color.WHITE);
+                g.fillOval((x * s) + 10, ((y * s) + 12), 5, 5);
             } else if (surroundingBombs > 0) {
                 g.setColor(CELL_COLOURS[surroundingBombs]);
-                g.drawString(String.valueOf(surroundingBombs), (x * s) + 10, ((y * s) + s) - 5);
+                g.drawString(String.valueOf(surroundingBombs), (x * s) + 8,
+                        ((y * s) + s) - 4);
             }
         }
         if (type == Type.FLAGGED || type == Type.FLAGGED_MINE) {
+            g.setColor(Color.RED);
+            g.fillRect((x * s) + 8, ((y * s) + 6), 15, 5);
             g.setColor(Color.BLACK);
-            g.drawString("?", (x * s) + 10, ((y * s) + s) - 5);
+            g.fillRect((x * s) + 14, ((y * s) + 11), 3, 15);
         }
 
-        g.setColor(Color.DARK_GRAY); // outline
+        g.setColor(Color.GRAY); // outline
         g.drawRect(x * s, y * s, s, s); // outline
     }
 }

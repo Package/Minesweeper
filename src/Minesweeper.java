@@ -31,14 +31,12 @@ public class Minesweeper {
     /* The game frame */
     protected JFrame frame;
 
-    /* The graphics panel */
-    protected GridInterface gui;
-
     /* Construct the window to hold a new game of minesweeper */
     public Minesweeper() {
         frame = new JFrame("Minesweeper");
-        frame.setSize(460, 480);
+        frame.setSize(400, 300);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -46,8 +44,34 @@ public class Minesweeper {
                     System.exit(1);
             }
         });
-        frame.setContentPane(gui = new GridInterface());
+        setLookAndFeel();
+        frame.setContentPane(new IntroInterface(this));
         frame.setVisible(true);
+    }
+
+    /**
+     * Set the game options.
+     *
+     * @param width - width of the game in tiles
+     * @param height - height of the game in tiles
+     * @param mines - number of mines in the game
+     */
+    public void settings(int width, int height, int mines) {
+        final int s = 30; // cell size
+        frame.setSize(width * s + 8, height * s + 30);
+        frame.setContentPane(new GridInterface(width, height, mines));
+    }
+
+    /**
+     * Get rid of Java's default look and feel and use
+     * the system defined one instead.
+     */
+    private void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -57,7 +81,8 @@ public class Minesweeper {
      */
     private boolean confirmLeave() {
         int option = JOptionPane.showConfirmDialog(Minesweeper.this.frame,
-                "Are you sure you want to leave? You will lose your game progress.",
+                "Are you sure you want to leave? You will lose any game " +
+                        "progress.",
                 "Minesweeper", JOptionPane.YES_NO_OPTION);
         return option == JOptionPane.YES_OPTION;
     }

@@ -42,7 +42,7 @@ public class Grid {
      * Construct a default grid of 9x9.
      */
     public Grid() {
-        this(9, 9);
+        this(9, 9, 10);
     }
 
     /**
@@ -51,9 +51,10 @@ public class Grid {
      * @param x
      * @param y
      */
-    public Grid(int x, int y) {
+    public Grid(int x, int y, int mines) {
         this.xCells = x;
         this.yCells = y;
+        this.numMines = mines;
         this.cells = new Cell[xCells][yCells];
         for (int i = 0; i < xCells; i++)
             for (int j = 0; j < yCells; j++)
@@ -121,8 +122,8 @@ public class Grid {
 
     /**
      * Open a cell on the game board.
-     * <p></p>
-     * This recursively the opening of all adjacent cells until
+     * <p/>
+     * This recursively triggers the opening of all adjacent cells until
      * the board should not be opened anymore.
      *
      * @param x
@@ -146,6 +147,7 @@ public class Grid {
         // Open cell up and check if its a mine
         cell.setState(Cell.State.OPEN);
         if (cell.getType() == Cell.Type.MINE) {
+            revealMines();
             JOptionPane.showMessageDialog(null, "You opened a mine. Good game.");
             return;
         }
@@ -161,6 +163,17 @@ public class Grid {
             if (c.getState() == Cell.State.CLOSED)
                 openCell(c.x, c.y);
         }
+    }
+
+    private void revealMines() {
+        for (int x = 0; x < xCells; x++)
+            for (int y = 0; y < yCells; y++) {
+                final Cell.Type type = cells[x][y].getType();
+                if (type == Cell.Type.MINE || type == Cell.Type.FLAGGED_MINE) {
+                    cells[x][y].setState(Cell.State.OPEN);
+                }
+            }
+
     }
 
     /**
