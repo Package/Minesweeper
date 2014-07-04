@@ -57,10 +57,15 @@ public class MouseInput extends MouseAdapter {
         if (x < 0 || y < 0 || x > grid.xCells || y > grid.yCells)
             return;
 
-        if (button == OPEN_CELL_BUTTON)
-            grid.openCell(x, y);
+        try {
+            if (button == OPEN_CELL_BUTTON)
+                grid.openCell(x, y);
 
-        if (button == MARK_MINE_BUTTON)
-            grid.markMine(x, y);
+            if (button == MARK_MINE_BUTTON)
+                grid.markMine(x, y);
+
+            grid.checkGameOver();
+        } catch (Exception ignored) {
+        }
     }
 }

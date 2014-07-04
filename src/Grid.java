@@ -55,6 +55,10 @@ public class Grid {
         this.xCells = x;
         this.yCells = y;
         this.numMines = mines;
+        setup();
+    }
+
+    private void setup() {
         this.cells = new Cell[xCells][yCells];
         for (int i = 0; i < xCells; i++)
             for (int j = 0; j < yCells; j++)
@@ -107,11 +111,19 @@ public class Grid {
         final Cell cell = cells[x][y];
         final Cell.Type type = cell.getType();
 
+        // dont allow opened tiles to be flagged
+        if (cell.getState() == Cell.State.OPEN)
+            return;
+
         // unflag the cell if its already marked
         if (type == Cell.Type.FLAGGED)
             cell.setType(Cell.Type.EMPTY);
         else if (type == Cell.Type.FLAGGED_MINE)
             cell.setType(Cell.Type.MINE);
+
+            // don't allow more flags than mines
+        else if (countFlags(false) == numMines)
+            return;
 
             // flag the cell
         else if (type == Cell.Type.MINE)
@@ -149,6 +161,7 @@ public class Grid {
         if (cell.getType() == Cell.Type.MINE) {
             revealMines();
             JOptionPane.showMessageDialog(null, "You opened a mine. Good game.");
+            setup();
             return;
         }
 
@@ -165,15 +178,16 @@ public class Grid {
         }
     }
 
+    /**
+     * Reveal the locations of the mines when the game is over.
+     */
     private void revealMines() {
         for (int x = 0; x < xCells; x++)
             for (int y = 0; y < yCells; y++) {
                 final Cell.Type type = cells[x][y].getType();
-                if (type == Cell.Type.MINE || type == Cell.Type.FLAGGED_MINE) {
+                if (type == Cell.Type.MINE || type == Cell.Type.FLAGGED_MINE)
                     cells[x][y].setState(Cell.State.OPEN);
-                }
             }
-
     }
 
     /**
@@ -204,6 +218,33 @@ public class Grid {
             if (c.getState() == Cell.State.CLOSED)
                 openCell(c.x, c.y);
         }
+    }
+
+    public void checkGameOver() {
+        // Checking if they have flagged all the mines
+        int flaggedCount = countFlags(true);
+        if (flaggedCount == numMines) {
+            JOptionPane.showMessageDialog(null, "Well done. You win.");
+            setup();
+        }
+    }
+
+    /**
+     * Count the number of flags that have been placed.
+     * @param minesOnly - whether to only count correctly placed mines
+     * @return number of flags placed
+     */
+    private int countFlags(boolean minesOnly) {
+        int flaggedCount = 0;
+        for (int x = 0; x < xCells; x++)
+            for (int y = 0; y < yCells; y++) {
+                final Cell.Type type = cells[x][y].getType();
+                if (!minesOnly && type == Cell.Type.FLAGGED)
+                    flaggedCount++;
+                if (type == Cell.Type.FLAGGED_MINE)
+                    flaggedCount++;
+            }
+        return flaggedCount;
     }
 
     /**
